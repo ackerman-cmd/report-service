@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/sql/001-create-report-service-schema.sql
+  - include:
+      file: db/changelog/sql/002-create-sla-policies.sql
+  - include:
+      file: db/changelog/sql/003-create-report-history.sql
+  - include:
+      file: db/changelog/sql/004-create-sla-notifications.sql
+  - include:
+      file: db/changelog/sql/005-add-s3-fields-to-report-history.sql

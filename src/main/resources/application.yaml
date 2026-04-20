@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: report-service
+  config:
+    import: "optional:file:./secrets.yaml"
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?currentSchema=report_service
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: report_service
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: report_service
+    liquibase-schema: report_service
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+
+app:
+  report:
+    admin-emails: ${REPORT_ADMIN_EMAIL}
+    cron: 0 0 8 * * *
+    from-email: reports@system-alerts.ru
+    client-manager-email: ${CLIENT_MANAGER_EMAIL:}
+    sla-warning-threshold-percent: ${SLA_WARNING_THRESHOLD_PERCENT:80}
+    sla-monitoring-cron: ${SLA_MONITORING_CRON:0 0 * * * *}
+
+  kafka:
+    topics:
+      daily-report: report.daily
+
+  email-service:
+    base-url: ${EMAIL_SERVICE_URL}
+
+  s3:
+    endpoint: ${S3_ENDPOINT}
+    access-key: ${S3_ACCESS_KEY}
+    secret-key: ${S3_SECRET_KEY}
+    bucket: ${S3_BUCKET}
+    region: ${S3_REGION}
+    public-url: ${S3_PUBLIC_URL}
+
+server:
+  port: 8086
+
+logging:
+  level:
+    com.base.reportservice: INFO
+    org.springframework.scheduling: INFO
