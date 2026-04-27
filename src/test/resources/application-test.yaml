@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: report-service
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: report_service
+    open-in-view: false
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: report_service
+    liquibase-schema: report_service
+
+  # bootstrap-servers переопределяет @EmbeddedKafka автоматически
+  kafka:
+    bootstrap-servers: localhost:9092
+
+app:
+  report:
+    admin-emails: test@test.ru
+    # "-" отключает @Scheduled задачи (Spring Framework 5.1+)
+    cron: "-"
+    from-email: test@test.ru
+    sla-monitoring-cron: "-"
+
+  kafka:
+    topics:
+      daily-report: report.daily.test
+
+  email-service:
+    base-url: http://localhost:9999
+
+  # S3Client создаётся но не подключается при инициализации бина
+  s3:
+    endpoint: http://localhost:9999
+    access-key: test-key
+    secret-key: test-secret
+    bucket: test-reports
+    region: us-east-1
+    public-url: http://localhost:9999/test-reports
