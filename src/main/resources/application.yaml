@@ -51,6 +51,22 @@ app:
     region: ${S3_REGION}
     public-url: ${S3_PUBLIC_URL}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
 server:
   port: 8086
 
